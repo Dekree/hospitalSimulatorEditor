@@ -1,0 +1,44 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Административная консоль СИМИ</a>
+        </div>
+
+        <ul class="nav navbar-nav"
+            *ngIf="isUserAuthorized() || !wasCameByLink" >
+            <li [class.active] = "router.url.indexOf( '/clinical-knowledge-manager' ) !== -1"
+                *ngIf="hasCkmPermission()">
+                <a [routerLink]="['/clinical-knowledge-manager']">Менеджер артефактов</a>
+            </li>
+            <li [class.active] = "router.url.indexOf( '/class-code-terminology' ) !== -1">
+                <a [routerLink]="['/class-code-terminology']">Классификатор документов</a>
+            </li>
+            <li [class.active] = "router.url.indexOf( '/user-management' ) !== -1"
+                *ngIf="hasUserPermission()">
+                <a [routerLink]="['/user-management']">Пользователи</a>
+            </li>
+
+            <li [class.active] = "router.url == '/es-registry'"
+                *ngIf="hasExtsysPermission()">
+                <a [routerLink]="['/es-registry']">Внешние системы</a>
+            </li>
+            <li routerLinkActive="active"
+                *ngIf="hasAuthzPermission()">
+                <a routerLink="/apm">Политики авторизации</a>
+            </li>
+            <li routerLinkActive="active"
+                *ngIf="hasSubscriptionPermission()">
+                <a routerLink="/subscriptions" title="Управления подписками на уведомления">Подписки</a>
+            </li>
+        </ul>
+
+        <login-user></login-user>
+    </div>
+</nav>
+
+<router-outlet></router-outlet>
+
+<simple-notifications [options]="notificationOptions"></simple-notifications>
+
+<dialogs></dialogs>

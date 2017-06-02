@@ -1,0 +1,9 @@
+logs/*
+!.gitkeep
+node_modules/
+dist/
+materials/
+.idea/
+typings/
+libs/*
+out/*

@@ -1,0 +1,11 @@
+{
+    "port": 8383,
+    "server": {
+        "baseDir": "./dist"
+    },
+    "watchOptions": {
+        "ignoreInitial": true,
+        "ignored": "**/*.*"
+    },
+    "codeSync": false
+}
