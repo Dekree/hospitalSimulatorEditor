@@ -24,9 +24,6 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        if( location.pathname.search(/\/clinical-knowledge-manager\/[^$]/) > -1 ) {
-            this.wasCameByLink = true;
-        }
     }
 
 }
