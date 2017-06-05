@@ -1,14 +1,12 @@
 import { Component, ViewEncapsulation, ViewContainerRef } from '@angular/core';
-import 'font-awesome/css/font-awesome';
-import 'shared/styles/main.less';
+import 'font-awesome/css/font-awesome.css';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component( {
     selector: 'app',
     templateUrl: './app.tpl.html',
     encapsulation: ViewEncapsulation.None,
-    styleUrls: [ './app.style.less' ],
-    providers: []
+    styleUrls: [ './app.style.less' ]
 } )
 
 export class AppComponent {
@@ -20,10 +18,11 @@ export class AppComponent {
         showProgressBar: false
     };
 
-    constructor() {
-    }
+    constructor( vcr: ViewContainerRef,
+                 router: Router,
+                 protected route: ActivatedRoute ) {
 
-    ngOnInit() {
+        this.router = router;
     }
 
 }

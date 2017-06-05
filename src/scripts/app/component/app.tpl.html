@@ -7,7 +7,7 @@
         <ul class="menu__items">
             <li class="menu__item"
                 [class.item__active] = "router.url.indexOf( '/game-editor' ) !== -1">
-                <a [routerLink]="['/game-editor']">Менеджер артефактов</a>
+                <a [routerLink]="['/game-editor']">Рубрики</a>
             </li>
         </ul>
 
@@ -15,4 +15,4 @@
 
 <router-outlet></router-outlet>
 
-<simple-notifications [options]="notificationOptions"></simple-notifications>
+<!--<simple-notifications [options]="notificationOptions"></simple-notifications>-->

@@ -37,6 +37,7 @@ import { StepLiveViewPageComponent } from './components/step-live-view-page';
     ],
 
     declarations: [
+        GameEditorPageComponent,
         RubricCreatePageComponent,
         RubricsOrderPageComponent,
         RubricPageComponent,

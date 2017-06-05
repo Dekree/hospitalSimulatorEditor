@@ -36,7 +36,11 @@ module.exports = {
     },
 
     resolve: {
-        extensions: [ '.ts', '.js' ],
+        modules: [
+            path.resolve( './src/scripts' ),
+            'node_modules'
+        ],
+        extensions: [ '.js', '.ts' ],
         alias: {
             assets: assetsPath,
             styles: stylesPath
@@ -79,6 +83,22 @@ module.exports = {
         rules: [
 
             {
+                test: /\.html$/,
+                use: [
+                    {
+                        loader: 'html-loader',
+                        options: {
+                            minimize: true,
+                            removeAttributeQuotes: false,
+                            caseSensitive: true,
+                            customAttrSurround: [ [ /#/, /(?:)/ ], [ /\*/, /(?:)/ ], [ /\[?\(?/, /(?:)/ ] ],
+                            customAttrAssign: [ /\)?\]?=/ ]
+                        }
+                    }
+                ]
+            },
+
+            {
                 test: /\.pug$/,
                 loader: 'pug-loader',
                 options: {
@@ -96,20 +116,26 @@ module.exports = {
 
             {
                 test: /\.less$/,
-                exclude: /node_modules/,
-                loader: ExtractTextPlugin.extract( {
-                    fallback: 'style-loader',
-                    use: [
-                        'css-loader',
-                        'less-loader'
-                    ]
-                } )
+                use: [
+                    'raw-loader',
+                    'less-loader'
+                ]
+            },
+
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
             },
 
             {
                 test: /\.ts$/,
-                exclude: /node_modules/,
-                loader: 'ts-loader'
+                use: [
+                    'ts-loader',
+                    'angular2-template-loader'
+                ]
             }
         ]
     }
