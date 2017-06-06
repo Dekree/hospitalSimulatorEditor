@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class AppComponent {
     private router: Router;
-    private wasCameByLink: boolean = false;
     public notificationOptions: any = {
         position: ['top', 'right'],
         timeOut: 5000,
