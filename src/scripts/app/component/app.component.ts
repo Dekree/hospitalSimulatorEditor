@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, ViewContainerRef } from '@angular/core';
-import 'font-awesome/css/font-awesome.css';
+import 'styles/main.less';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component( {

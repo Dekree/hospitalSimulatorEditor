@@ -116,6 +116,19 @@ module.exports = {
 
             {
                 test: /\.less$/,
+                exclude: path.resolve('./src/scripts'),
+                loader: ExtractTextPlugin.extract( {
+                    fallback: 'style-loader',
+                    use: [
+                        'css-loader',
+                        'less-loader'
+                    ]
+                } )
+            },
+
+            {
+                test: /\.less$/,
+                include: path.resolve('./src/scripts'),
                 use: [
                     'raw-loader',
                     'less-loader'
