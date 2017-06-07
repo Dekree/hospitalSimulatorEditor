@@ -1,4 +1,4 @@
-@menuHeight: 50px;
+@menuHeight: 64px;
 @logoWidth: 300px;
 @padding: 10px;
 @primary1: #006600;
@@ -16,6 +16,7 @@ body {
     position: relative;
     width: 100%;
     height: calc(~"100% - @{menuHeight}");
+    min-height: initial;
     margin: 0;
     margin-top: @menuHeight;
     font-family: 'Arial', sans-serif;
@@ -26,55 +27,68 @@ app {
     height: 100%;
 }
 
-
-.menu {
-    display: inline-block;
+.mat-toolbar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: @menuHeight;
-    background-color: @primary1;
-}
-
-.menu__logo {
-    display: inline-block;
-    vertical-align: top;
-    width: @logoWidth;
-    height: 100%;
-    text-align: center;
-
-    a {
-        width: 100%;
-        height: 100%;
-        display: block;
-        font-size: 16px;
-        text-decoration: none;
-        color: #fff;
-        line-height: @menuHeight - 2;
-        background-color: @primary1;
-
-        &:hover {
-            text-decoration: none;
-            background-color: #fff;
-            color: @primary1;
-            opacity: 0.3;
-        }
-    }
 }
 
 .menu__items {
     list-style-type: none;
-    display: inline-block;
-    vertical-align: top;
-    width: calc(~"100% - @{logoWidth} - 4");
-    padding: 0 @padding;
+    float: left;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .menu__item {
+    display: block;
+    float: left;
+    height: 100%;
+    margin-right: @padding;
+
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        text-decoration: none;
+        line-height: @menuHeight - 2;
+        padding: 0 @padding * 2;
+        position: relative;
+
+        &:hover {
+            &:before {
+                display: block;
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #fff;
+                opacity: 0.3;
+            }
+        }
+    }
+}
+
+.item_active {
 
 }
 
-.item__active {
+.menu__item_right {
+    float: right;
+}
 
+.menu__item_align {
+    .mat-button-wrapper {
+        height: 42px;
+        display: block;
+    }
+    .mat-icon-button {
+        color: #fff;
+        height: @menuHeight;
+    }
 }

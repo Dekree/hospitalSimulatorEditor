@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 
 import { GameEditorRoutingModule } from './game-editor-routing.module';
 
+import { GameLoaderModule } from 'game-loader';
+
 import { GameEditorPageComponent } from './components/game-editor-page';
 
 import { RubricCreatePageComponent } from './components/rubric-create-page';
@@ -29,7 +31,8 @@ import { StepLiveViewPageComponent } from './components/step-live-view-page';
         BrowserModule,
         FormsModule,
         HttpModule,
-        GameEditorRoutingModule
+        GameEditorRoutingModule,
+        GameLoaderModule
     ],
 
     exports: [

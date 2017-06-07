@@ -1,18 +1,34 @@
-<nav class="menu">
+<script src="../../../../../../2016/SIMI2/Frontend/WebAdmin/src/app/components/app.component.ts"></script>
+<md-toolbar color="primary">
 
-        <div class="menu__logo">
-            <a class="logo" href="/">Редактор Симулятора поликлиники</a>
-        </div>
+    <ul class="menu__items">
+        <li class="menu__item">
+            <a [routerLink]="['/']">Редактор Симулятора поликлиники</a>
+        </li>
+        <li class="menu__item"
+            [class.item_active] = "router.url.indexOf( '/game-editor' ) !== -1">
+            <a [routerLink]="['/game-editor']">Рубрики</a>
+        </li>
+        <li class="menu__item menu__item_right menu__item_align">
+            <button md-icon-button [mdMenuTriggerFor]="toolbarMenu1"><md-icon>more_vert</md-icon></button>
+        </li>
+    </ul>
 
-        <ul class="menu__items">
-            <li class="menu__item"
-                [class.item__active] = "router.url.indexOf( '/game-editor' ) !== -1">
-                <a [routerLink]="['/game-editor']">Рубрики</a>
-            </li>
-        </ul>
 
-</nav>
+
+    <md-menu #toolbarMenu1="mdMenu">
+        <button md-menu-item>
+            <md-icon>settings</md-icon>
+            <span>Настройки</span>
+        </button>
+        <button md-menu-item>
+            <md-icon>exit_to_app</md-icon>
+            <span>Выйти</span>
+        </button>
+    </md-menu>
+
+</md-toolbar>
 
 <router-outlet></router-outlet>
 
-<!--<simple-notifications [options]="notificationOptions"></simple-notifications>-->
+<simple-notifications [options]="notificationOptions"></simple-notifications>
