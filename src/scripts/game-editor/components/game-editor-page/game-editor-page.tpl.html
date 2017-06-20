@@ -17,12 +17,28 @@
         <li class="game__action">
             <button class="game__action_change-order">
                 <a href="/game-editor/rubrics-order" title="Изменить порядок рубрик">
-                    <i class="fa fa-change"></i>
+                    <i class="fa fa-refresh"></i>
                 </a>
             </button>
         </li>
     </ul>
 
-    <div class="game__rubrics-list"></div>
+    <ul class="game__rubrics-list">
+
+        <li *ngFor="let rubrica of rubrics"
+             (click)="rubricaClick( rubrica )"
+             class="game__rubrica">
+
+            <a href="{{ '/game-editor/' + rubrica._id }}" class="rubrica_link">
+                <div class="rubrica_title">
+                    <h3 class="h3">
+                        {{ rubrica.rubricaName }}
+                    </h3>
+                </div>
+            </a>
+
+        </li>
+
+    </ul>
 
 </div>

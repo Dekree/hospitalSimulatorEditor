@@ -9,14 +9,15 @@ import { GameDataService } from '../../services';
     selector: 'game-editor-page',
     encapsulation: ViewEncapsulation.None,
     templateUrl: './game-editor-page.tpl.html',
-    styleUrls: [ './game-editor-page.style.less' ]
+    styleUrls: [ './game-editor-page.style.less' ],
+    providers: [ GameDataService ]
 } )
 
 export class GameEditorPageComponent implements OnInit {
 
-    header: string = 'Симулятор поликлиники';
+    private header: string = 'Симулятор поликлиники';
 
-    rubrics: IRubrica[] = [];
+    private rubrics: IRubrica[] = [];
 
     private loaderService: GameLoaderService;
 
@@ -30,6 +31,7 @@ export class GameEditorPageComponent implements OnInit {
                 return this.gameDataService.getRubrics();
             } )
             .then( ( rubrics: IRubrica[] ) => {
+                console.log( rubrics );
                 this.rubrics = rubrics;
             } )
             .catch( ( err ) => {
@@ -38,7 +40,7 @@ export class GameEditorPageComponent implements OnInit {
     }
 
     private drawRubrics(): Promise<any> {
-        this.loaderService.show( 'Идет построение рубрик' );
+        this.loaderService.show( 'Идет построение рубрик...' );
 
         return new Promise( ( resolve, reject ) => {
 
@@ -46,7 +48,7 @@ export class GameEditorPageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loaderService.show( 'Идет загрузка данных' );
+        this.loaderService.show( 'Идет загрузка данных...' );
 
         this.getRubrics()
             .then( () => {
