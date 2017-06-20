@@ -14,11 +14,13 @@ import { GameLoaderService } from './services';
     ],
 
     exports: [
-        GameLoaderService
+        HeartBeatLoaderComponent
     ],
 
     declarations: [
-        HeartBeatLoaderComponent,
+        HeartBeatLoaderComponent
+    ],
+    providers: [
         GameLoaderService
     ]
 } )

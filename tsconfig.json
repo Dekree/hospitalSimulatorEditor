@@ -17,7 +17,7 @@
     "./typings/index.d.ts"
   ],
   "include": [
-    "./src/**/*.ts",
+    "./src/scripts/**/*.ts",
     "./node_modules/@types/**/*.ts"
   ],
   "exclude": [
