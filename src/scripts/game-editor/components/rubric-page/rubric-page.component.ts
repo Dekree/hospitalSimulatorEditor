@@ -1,4 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { GameDataService } from '../../services/game-data/game-data.service';
+import { IRubrica } from '../../interfaces/IRubrica';
 
 @Component( {
     selector: 'rubric-page',
@@ -9,7 +11,9 @@ import { Component, ViewEncapsulation } from '@angular/core';
 
 export class RubricPageComponent {
 
-    constructor() {
+    private rubrica: IRubrica;
+
+    constructor( private gameDataService: GameDataService ) {
 
     }
 

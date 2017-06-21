@@ -1,0 +1,44 @@
+<div class="rubric-page">
+
+    <div class="rubric__header">
+        <h1 class="h1">
+            {{ rubrica.rubricaName }}
+        </h1>
+    </div>
+
+    <ul class="rubric__actions">
+        <li class="rubric__action">
+            <button class="quest__action_add">
+                <a href="/rubric-editor/' + rubrica._id + '/quest-create" title="Создать квест">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </button>
+        </li>
+        <li class="rubric__action">
+            <button class="rubric__action_change-order">
+                <a href="/rubric-editor/' + rubrica._id + '/quests-order" title="Изменить порядок квестов">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </button>
+        </li>
+    </ul>
+
+    <ul class="rubric__quest-list">
+
+        <li *ngFor="let quest of rubrica.quests"
+            (click)="rubricaClick( rubrica )"
+            class="rubric__quest">
+
+            <a href="{{ '/rubric-editor/' + rubrica._id + '/' + quest.number }}" class="quest_link">
+                <div class="rubrica_title">
+                    <h3 class="h3">
+                        {{ quest.name }}
+                    </h3>
+                </div>
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>
