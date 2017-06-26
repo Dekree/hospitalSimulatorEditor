@@ -26,33 +26,33 @@ const routes: Routes = [
         component: GameEditorPageComponent,
         children: [
             { path: 'rubric-create', component: RubricCreatePageComponent },
-            { path: 'rubrics-order', component: RubricsOrderPageComponent },
-            {
-                path: ':rubricId',
-                component: RubricPageComponent,
-                children: [
-                    { path: 'edit', component: RubricEditPageComponent },
-                    { path: 'quest-create', component: QuestCreatePageComponent },
-                    { path: 'quests-order', component: QuestsOrderPageComponent },
-                    {
-                        path: ':questId',
-                        component: QuestPageComponent,
-                        children: [
-                            { path: 'edit', component: QuestEditPageComponent },
-                            { path: 'step-create', component: StepCreatePageComponent },
-                            { path: 'steps-order', component: StepsOrderPageComponent },
-                            {
-                                path: ':stepId',
-                                component: StepPageComponent,
-                                children: [
-                                    { path: 'edit', component: StepEditPageComponent },
-                                    { path: 'step-live-view', component: StepLiveViewPageComponent }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
+            { path: 'rubrics-order', component: RubricsOrderPageComponent }
+        ]
+    },
+    {
+        path: 'game-editor/:rubricaId',
+        component: RubricPageComponent,
+        children: [
+            { path: 'edit', component: RubricEditPageComponent },
+            { path: 'quest-create', component: QuestCreatePageComponent },
+            { path: 'quests-order', component: QuestsOrderPageComponent }
+        ]
+    },
+    {
+        path: 'game-editor/:rubricaId/:questId',
+        component: QuestPageComponent,
+        children: [
+            { path: 'edit', component: QuestEditPageComponent },
+            { path: 'step-create', component: StepCreatePageComponent },
+            { path: 'steps-order', component: StepsOrderPageComponent }
+        ]
+    },
+    {
+        path: 'game-editor/:rubricaId/:questId/:stepId',
+        component: StepPageComponent,
+        children: [
+            { path: 'edit', component: StepEditPageComponent },
+            { path: 'step-live-view', component: StepLiveViewPageComponent }
         ]
     }
 ];

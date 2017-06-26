@@ -14,18 +14,16 @@ import { NotificationsService } from 'angular2-notifications/dist';
 } )
 
 export class AppComponent {
-    private router: Router;
+
     public notificationOptions: any = {
         position: ['top', 'right'],
         timeOut: 5000,
         showProgressBar: false
     };
 
-    constructor( vcr: ViewContainerRef,
-                 router: Router,
-                 protected route: ActivatedRoute ) {
-
-        this.router = router;
+    constructor( private vcr: ViewContainerRef,
+                 private router: Router,
+                 private route: ActivatedRoute ) {
     }
 
 }

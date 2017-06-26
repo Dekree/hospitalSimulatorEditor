@@ -9,8 +9,7 @@ import { GameDataService } from '../../services';
     selector: 'game-editor-page',
     encapsulation: ViewEncapsulation.None,
     templateUrl: './game-editor-page.tpl.html',
-    styleUrls: [ './game-editor-page.style.less' ],
-    providers: [ GameDataService ]
+    styleUrls: [ './game-editor-page.style.less' ]
 } )
 
 export class GameEditorPageComponent implements OnInit {
@@ -19,10 +18,8 @@ export class GameEditorPageComponent implements OnInit {
 
     private rubrics: IRubrica[] = [];
 
-    private loaderService: GameLoaderService;
-
-    constructor( private gameDataService: GameDataService ) {
-        this.loaderService = new GameLoaderService();
+    constructor( private gameDataService: GameDataService,
+                 private loaderService: GameLoaderService) {
     }
 
     private getRubrics(): Promise<any> {
@@ -31,7 +28,6 @@ export class GameEditorPageComponent implements OnInit {
                 return this.gameDataService.getRubrics();
             } )
             .then( ( rubrics: IRubrica[] ) => {
-                console.log( rubrics );
                 this.rubrics = rubrics;
             } )
             .catch( ( err ) => {

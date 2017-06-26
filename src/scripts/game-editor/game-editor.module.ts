@@ -7,6 +7,8 @@ import { GameEditorRoutingModule } from './game-editor-routing.module';
 
 import { GameLoaderModule } from 'game-loader';
 
+import { GameDataService } from './services';
+
 import { GameEditorPageComponent } from './components/game-editor-page';
 
 import { RubricCreatePageComponent } from './components/rubric-create-page';
@@ -57,6 +59,9 @@ import { StepLiveViewPageComponent } from './components/step-live-view-page';
 
         StepEditPageComponent,
         StepLiveViewPageComponent
+    ],
+    providers: [
+        GameDataService
     ]
 } )
 
