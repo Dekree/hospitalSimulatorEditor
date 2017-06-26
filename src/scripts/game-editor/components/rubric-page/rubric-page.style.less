@@ -1,0 +1,85 @@
+@import '../../../../styles/common/variables.less';
+
+.rubrica-page {
+    position: relative;
+}
+
+.rubrica__header {
+    text-align: center;
+    border-top: 1px solid transparent;
+
+    .h1 {
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+}
+
+
+.rubrica__actions {
+    list-style-type: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    margin: 0;
+}
+
+.rubrica__action {
+    float: left;
+}
+
+.rubrica__quest-list {
+    list-style-type: none;
+    margin: 0;
+    margin-top: 20px;
+    padding: 0 15px;
+}
+
+.rubrica__quest {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(~"100% / 4 - 15px");
+    height: 200px;
+    margin: 0 20px 20px 0;
+    text-align: center;
+    border: 1px solid @primary1;
+    border-radius: @itemRadius;
+    position: relative;
+
+}
+
+.rubrica__quest:nth-child(4n + 4) {
+    margin-right: 0;
+}
+
+.quest_link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: @primary1;
+    cursor: pointer;
+    font-weight: normal;
+    font-size: 16px;
+    border-radius: @itemRadius;
+
+    &:hover {
+        color: #fff;
+        background-color: @primary1;
+    }
+}
+
+.quest_title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    .h3 {
+        margin: 0;
+        align-self: center;
+    }
+}
+
+
