@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
 
-import { GameDataService } from '../../services/game-data/game-data.service';
+import { GameDataService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
 import { IRubrica, IQuestMetadata, IQuestList, IQuestParam } from '../../interfaces';

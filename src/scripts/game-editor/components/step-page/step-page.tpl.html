@@ -1,0 +1,60 @@
+<div *ngIf="stepMetadata" class="step-page">
+
+    <div class="step__header">
+        <h1 class="h1">
+            {{ 'Шаг ' + stepId.slice( 5 ) }}
+        </h1>
+    </div>
+
+    <ul class="step__actions">
+
+        <li class="step__action">
+            <button class="rubrica__action_add-quest">
+                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/' + stepId + '/step-live-view' }}" title="Предпросмотр шага">
+                    <i class="fa fa-eye"></i>
+                </a>
+            </button>
+        </li>
+
+        <li class="quest__action">
+            <button class="rubrica__action_change-order">
+                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/' + stepId + '/step-edit' }}" title="Редактировать шаг">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            </button>
+        </li>
+
+    </ul>
+
+    <div class="step__metadata_view">
+
+        <div class="metadata__location">
+            <h5 class="location__name">
+                Локация:
+            </h5>
+            <h5 class="location__value">
+                {{ getText( 'locations', stepMetadata.location ) }}
+            </h5>
+        </div>
+
+        <div class="metadata__type">
+            <h5 class="type__name">
+                Тип шага:
+            </h5>
+            <h5 class="type__value">
+                {{ getText( 'types', stepMetadata.type ) }}
+            </h5>
+        </div>
+
+        <div class="metadata__size">
+            <h5 class="size__name">
+                Размер шага:
+            </h5>
+            <h5 class="size__value">
+                {{ getText( 'sizes', stepMetadata.size ) }}
+            </h5>
+        </div>
+
+    </div>
+
+</div>

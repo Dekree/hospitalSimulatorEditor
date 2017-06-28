@@ -7,20 +7,31 @@
     </div>
 
     <ul class="quest__actions">
+
         <li class="quest__action">
-            <button class="rubrica__action_add-quest">
+            <button class="quest__action_edit">
+                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/quest-edit' }}" title="Редактировать квест">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            </button>
+        </li>
+
+        <li class="quest__action">
+            <button class="quest__action_add-step">
                 <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/step-create' }}" title="Создать шаг">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
         </li>
+
         <li class="quest__action">
-            <button class="rubrica__action_change-order">
+            <button class="quest__action_change-order">
                 <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/steps-order' }}" title="Изменить порядок шагов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
         </li>
+
     </ul>
 
     <ul class="quest__step-list">

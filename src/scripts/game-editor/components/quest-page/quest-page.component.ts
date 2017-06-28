@@ -4,10 +4,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
 
-import { GameDataService } from '../../services/game-data/game-data.service';
+import { GameDataService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
-import { IStepMetadata, IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
+import { IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
 
 @Component( {
     selector: 'quest-page',
@@ -50,7 +50,7 @@ export class QuestPageComponent implements OnInit, OnDestroy {
 
                 return this.drawSteps();
             } )
-            .then( ( questMetadata: IQuestList ) => {
+            .then( () => {
                 this.loaderService.hide();
             } )
             .catch( ( err ) => {

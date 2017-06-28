@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
 
-import { GameDataService } from '../../services/game-data/game-data.service';
+import { GameDataService, TranslatorService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
 import { IStepMetadata, IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
@@ -18,32 +18,56 @@ import { IStepMetadata, IQuestParam, IQuestMetadata, IQuestList } from '../../in
 
 export class StepPageComponent implements OnInit, OnDestroy {
 
-    private questData: any;
+    private stepMetadata: IStepMetadata;
+    private routeParams: Subscription;
 
-    private questName: string = '';
     private rubricaId: string;
     private questId: string;
-
-    private steps: IStepMetadata[] = [];
-    private routeParams: Subscription;
+    private stepId: string;
 
     constructor( private gameDataService: GameDataService,
                  private notificationsService: NotificationsService,
                  private loaderService: GameLoaderService,
+                 private translatorService: TranslatorService,
                  private router: Router,
                  private route: ActivatedRoute ) {
     }
 
-    private getQuestMetadata( questNumber: string ): void {
+    private getStepMetadata( questNumber: string ): void {
         let questParam: IQuestParam = {
             number: questNumber,
             name: ''
         };
-
         this.gameDataService.getQuests( [ questParam ] )
             .then( ( questMetadata: IQuestList ) => {
+                this.stepMetadata = questMetadata[ questNumber ][ this.stepId ];
 
+                if( typeof this.stepMetadata === 'undefined' ) {
+                    return Promise.reject( 'Wrong step number' );
+                }
+                return this.drawStep();
+            } )
+            .then( () => {
+                this.loaderService.hide();
+            } )
+            .catch( ( err ) => {
+                this.notificationsService.warn( 'Такого шага не существует' );
+                this.router.navigateByUrl( '/game-editor/' + this.rubricaId + '/' + this.questId );
+
+                console.error( err );
             } );
+    }
+
+    private drawStep(): Promise<any> {
+        this.loaderService.show( 'Идет построение шага...' );
+
+        return new Promise( ( resolve, reject ) => {
+
+        } );
+    }
+
+    getText( collectionName: string, word: string ): string {
+        return this.translatorService.getTranslatedWord( collectionName, word );
     }
 
     ngOnInit() {
@@ -52,8 +76,9 @@ export class StepPageComponent implements OnInit, OnDestroy {
         this.routeParams = this.route.params.subscribe( ( params ) => {
             this.questId = params[ 'questId' ];
             this.rubricaId = params[ 'rubricaId' ];
+            this.stepId = params[ 'stepId' ];
 
-            this.getQuestMetadata( this.questId );
+            this.getStepMetadata( this.questId );
         } );
     }
 
