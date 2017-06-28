@@ -7,7 +7,7 @@ import { GameEditorRoutingModule } from './game-editor-routing.module';
 
 import { GameLoaderModule } from 'game-loader';
 
-import { GameDataService } from './services';
+import { GameDataService, TranslatorService } from './services';
 
 import { GameEditorPageComponent } from './components/game-editor-page';
 
@@ -61,7 +61,8 @@ import { StepLiveViewPageComponent } from './components/step-live-view-page';
         StepLiveViewPageComponent
     ],
     providers: [
-        GameDataService
+        GameDataService,
+        TranslatorService
     ]
 } )
 

@@ -101,17 +101,30 @@ export class GameDataService {
         } );
     }
 
+    getQuestParamByNumber( quests: IQuestParam[], questNumber: string ): IQuestParam {
+        for( let i: number = 0, ii: number = quests.length; i < ii; i += 1 ) {
+            if( quests[ i ].number === questNumber ) {
+                return quests[ i ];
+            }
+        }
+    }
+
     getQuestParam( questNumber: string ): Promise<IQuestParam> {
         return new Promise( ( resolve, reject ) => {
             if( this.questParams.length ) {
-                for( let i: number = 0, ii: number = this.questParams.length; i < ii; i += 1 ) {
-                    if( this.questParams[ i ].number === questNumber ) {
-                        resolve( this.questParams[ i ] );
-                    }
-                }
+                let questParam: IQuestParam = this.getQuestParamByNumber( this.questParams, questNumber );
+                resolve( questParam );
+            } else {
+                return this.getRubrics()
+                    .then( () => {
+                        if( this.questParams.length ) {
+                            let questParam: IQuestParam = this.getQuestParamByNumber( this.questParams, questNumber );
+                            resolve( questParam );
+                        } else {
+                            reject( 'Квеста с таким номером не существует' );
+                        }
+                    } );
             }
-
-            reject( 'Квеста с таким номером не существует' );
         } );
     }
 

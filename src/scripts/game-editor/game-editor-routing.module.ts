@@ -30,7 +30,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricaId',
+        path: 'game-editor/:rubricId',
         component: RubricPageComponent,
         children: [
             { path: 'edit', component: RubricEditPageComponent },
@@ -39,7 +39,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricaId/:questId',
+        path: 'game-editor/:rubricId/:questId',
         component: QuestPageComponent,
         children: [
             { path: 'edit', component: QuestEditPageComponent },
@@ -48,7 +48,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricaId/:questId/:stepId',
+        path: 'game-editor/:rubricId/:questId/:stepId',
         component: StepPageComponent,
         children: [
             { path: 'edit', component: StepEditPageComponent },

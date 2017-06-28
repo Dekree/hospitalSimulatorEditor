@@ -43,6 +43,10 @@ export class GameEditorPageComponent implements OnInit {
         } );
     }
 
+    rubricClick( rubric: IRubrica ): void {
+
+    }
+
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
