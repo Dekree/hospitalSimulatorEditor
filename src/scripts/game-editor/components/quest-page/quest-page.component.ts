@@ -21,7 +21,7 @@ export class QuestPageComponent implements OnInit, OnDestroy {
     private questMetadata: IQuestMetadata;
     private routeParams: Subscription;
 
-    private rubricaId: string;
+    private rubricId: string;
     private questId: string;
     private questNumber: string;
     private questName: string;
@@ -55,7 +55,7 @@ export class QuestPageComponent implements OnInit, OnDestroy {
             } )
             .catch( ( err ) => {
                 this.notificationsService.warn( err );
-                this.router.navigateByUrl( '/game-editor/' + this.rubricaId );
+                this.router.navigateByUrl( '/game-editor/' + this.rubricId );
 
                 console.error( 'Wrong quest number' );
             } );
@@ -97,7 +97,7 @@ export class QuestPageComponent implements OnInit, OnDestroy {
 
         this.routeParams = this.route.params.subscribe( ( params ) => {
             this.questId = params[ 'questId' ];
-            this.rubricaId = params[ 'rubricaId' ];
+            this.rubricId = params[ 'rubricId' ];
 
             this.getQuestMetadata( this.questId );
         } );

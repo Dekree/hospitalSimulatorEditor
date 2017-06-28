@@ -10,7 +10,7 @@
 
         <li class="quest__action">
             <button class="quest__action_edit">
-                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/quest-edit' }}" title="Редактировать квест">
+                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/quest-edit' ]" title="Редактировать квест">
                     <i class="fa fa-pencil"></i>
                 </a>
             </button>
@@ -18,7 +18,7 @@
 
         <li class="quest__action">
             <button class="quest__action_add-step">
-                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/step-create' }}" title="Создать шаг">
+                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/step-create' ]" title="Создать шаг">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
@@ -26,7 +26,7 @@
 
         <li class="quest__action">
             <button class="quest__action_change-order">
-                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/steps-order' }}" title="Изменить порядок шагов">
+                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/steps-order' ]" title="Изменить порядок шагов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
@@ -40,7 +40,7 @@
             (click)="stepClick( step )"
             class="quest__step">
 
-            <a href="{{ '/game-editor/' + rubricaId + '/' + questId + '/' + step.name }}" class="step__link">
+            <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questId + '/' + step.name ]" class="step__link">
                 <div class="step__title">
                     <h3 class="h3">
                         {{ 'Шаг ' + step.name.slice( 5 ) }}
