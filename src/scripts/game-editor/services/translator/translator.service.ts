@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import * as CONST from '../../interfaces';
+import * as CONST from '../../constants';
 
 @Injectable()
 export class TranslatorService {
@@ -9,6 +9,7 @@ export class TranslatorService {
     }
 
     getTranslatedWord( collectionName: string, word: string ): string {
+        console.log( CONST );
         let collection: any = CONST[ collectionName ];
 
         if( typeof collection[ word ] !== 'undefined' ) {

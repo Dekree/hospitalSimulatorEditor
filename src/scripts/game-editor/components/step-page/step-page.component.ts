@@ -21,7 +21,7 @@ export class StepPageComponent implements OnInit, OnDestroy {
     private stepMetadata: IStepMetadata;
     private routeParams: Subscription;
 
-    private rubricaId: string;
+    private rubricId: string;
     private questId: string;
     private stepId: string;
 
@@ -52,7 +52,7 @@ export class StepPageComponent implements OnInit, OnDestroy {
             } )
             .catch( ( err ) => {
                 this.notificationsService.warn( 'Такого шага не существует' );
-                this.router.navigateByUrl( '/game-editor/' + this.rubricaId + '/' + this.questId );
+                this.router.navigateByUrl( '/game-editor/' + this.rubricId + '/' + this.questId );
 
                 console.error( err );
             } );
@@ -75,7 +75,7 @@ export class StepPageComponent implements OnInit, OnDestroy {
 
         this.routeParams = this.route.params.subscribe( ( params ) => {
             this.questId = params[ 'questId' ];
-            this.rubricaId = params[ 'rubricaId' ];
+            this.rubricId = params[ 'rubricId' ];
             this.stepId = params[ 'stepId' ];
 
             this.getStepMetadata( this.questId );
