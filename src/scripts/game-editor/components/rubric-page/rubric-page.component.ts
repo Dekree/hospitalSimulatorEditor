@@ -104,7 +104,7 @@ export class RubricPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
-        this.routeParams = this.route.params.subscribe( ( params ) => {
+        this.routeParams = this.route.params.subscribe( ( params: Params ) => {
             if( typeof params[ 'rubricId' ] !== 'undefined' ) {
                 let rubricId: string = params[ 'rubricId' ];
 

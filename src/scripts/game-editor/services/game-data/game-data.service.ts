@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { IQuestParam, IRubrica, IQuestMetadata, IQuestList, } from '../../interfaces';
+import { IGameDataService, IQuestParam, IRubrica, IQuestMetadata, IQuestList, } from '../../interfaces';
 
 @Injectable()
-export class GameDataService {
+export class GameDataService implements IGameDataService {
 
     private baseUrl: string = '../data/';
     private fileType: string = '.json';

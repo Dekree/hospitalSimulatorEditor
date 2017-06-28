@@ -1,11 +1,8 @@
-export * from './IRubrica';
+// services
+export * from './services/IGameDataService';
 
-export * from './IQuestParam';
-export * from './IQuestMetadata';
-export * from './IQuestList';
-
-export * from './IStepMetadata';
-
-export * from './IReport';
-export * from './IQuestReport';
-export * from './IStepReport';
+// metadata
+export * from './metadata/IGame';
+export * from './metadata/IRubric';
+export * from './metadata/IQuest';
+export * from './metadata/IStep';
