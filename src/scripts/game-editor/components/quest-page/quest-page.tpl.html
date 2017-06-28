@@ -1,0 +1,44 @@
+<div class="quest-page">
+
+    <div class="quest__header">
+        <h1 class="h1">
+            {{ questName }}
+        </h1>
+    </div>
+
+    <ul class="quest__actions">
+        <li class="quest__action">
+            <button class="rubrica__action_add-quest">
+                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/step-create' }}" title="Создать шаг">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </button>
+        </li>
+        <li class="quest__action">
+            <button class="rubrica__action_change-order">
+                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/steps-order' }}" title="Изменить порядок шагов">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </button>
+        </li>
+    </ul>
+
+    <ul class="quest__step-list">
+
+        <li *ngFor="let step of steps"
+            (click)="stepClick( step )"
+            class="quest__step">
+
+            <a href="{{ '/game-editor/' + rubricaId + '/' + questId + '/' + step.name }}" class="step__link">
+                <div class="step__title">
+                    <h3 class="h3">
+                        {{ 'Шаг ' + step.name.slice( 5 ) }}
+                    </h3>
+                </div>
+            </a>
+
+        </li>
+
+    </ul>
+
+</div>
