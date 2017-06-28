@@ -9,14 +9,14 @@
     <ul class="rubrica__actions">
         <li class="rubrica__action">
             <button class="rubrica__action_add-quest">
-                <a href="/game-editor/' + rubrica._id + '/quest-create" title="Создать квест">
+                <a href="{{ '/game-editor/' + rubrica.id + '/quest-create' }}" title="Создать квест">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
         </li>
         <li class="rubrica__action">
             <button class="rubrica__action_change-order">
-                <a href="/game-editor/' + rubrica._id + '/quests-order" title="Изменить порядок квестов">
+                <a href="{{ '/game-editor/' + rubrica.id + '/quests-order' }}" title="Изменить порядок квестов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
@@ -26,11 +26,11 @@
     <ul class="rubrica__quest-list">
 
         <li *ngFor="let quest of quests"
-            (click)="rubricaClick( rubrica )"
+            (click)="questClick( quest )"
             class="rubrica__quest">
 
-            <a href="{{ '/game-editor/' + rubrica._id + '/' + quest.number }}" class="quest_link">
-                <div class="quest_title">
+            <a href="{{ '/game-editor/' + rubrica._id + '/' + quest.number }}" class="quest__link">
+                <div class="quest__title">
                     <h3 class="h3">
                         {{ quest.name }}
                     </h3>

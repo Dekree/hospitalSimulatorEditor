@@ -103,6 +103,10 @@ export class RubricPageComponent implements OnInit, OnDestroy {
         } );
     }
 
+    questClick( quest: any ): void {
+
+    }
+
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
