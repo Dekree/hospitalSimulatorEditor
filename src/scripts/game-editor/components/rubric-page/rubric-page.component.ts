@@ -18,9 +18,10 @@ import { IRubrica, IQuestMetadata, IQuestList, IQuestParam } from '../../interfa
 
 export class RubricPageComponent implements OnInit, OnDestroy {
 
-    private rubricaName: string = '';
+    private rubricName: string;
+    private rubricId: string;
 
-    private rubrica: IRubrica;
+    private rubric: IRubrica;
     private quests: IQuestMetadata[] = [];
 
     private routeParams: Subscription;
@@ -48,26 +49,19 @@ export class RubricPageComponent implements OnInit, OnDestroy {
             } );
     }
 
-    private getQuestParamByNumber( questNumber: string ): IQuestParam {
-        let questParam: IQuestParam[] = this.rubrica.quests;
-        for( let i: number = 0, ii: number = questParam.length; i < ii; i += 1 ) {
-            if( questParam[ i ].number === questNumber ) {
-                return questParam[ i ];
-            }
-        }
-    }
-
-    private getRubrica( rubricaId: string ): Promise<any> {
+    private getRubrica( rubricId: string ): Promise<any> {
         return this.gameDataService.getRubrics()
             .then( ( rubrics: IRubrica[] ) => {
-                rubrics.forEach( ( rubrica: IRubrica ) => {
-                    if( rubrica._id === rubricaId ) {
-                        this.rubrica = rubrica;
-                        this.rubricaName = rubrica.rubricaName;
+
+                rubrics.forEach( ( rubric: IRubrica ) => {
+                    if( rubric._id === rubricId ) {
+                        this.rubric = rubric;
+                        this.rubricName = rubric.rubricaName;
+                        this.rubricId = rubric._id;
                     }
                 } );
 
-                if( typeof this.rubrica === 'undefined' ) {
+                if( typeof this.rubric === 'undefined' ) {
                     this.notificationsService.warn( 'Такой рубрики не существует' );
                     this.router.navigateByUrl( '/game-editor' );
 
@@ -77,7 +71,7 @@ export class RubricPageComponent implements OnInit, OnDestroy {
     }
 
     private getQuests(): Promise<any> {
-        let questParams: IQuestParam[] = this.rubrica.quests.slice();
+        let questParams: IQuestParam[] = this.rubric.quests.slice();
 
         return this.gameDataService.getQuests( questParams )
             .then( ( questList: IQuestList ) => {
@@ -85,7 +79,7 @@ export class RubricPageComponent implements OnInit, OnDestroy {
                     if( questList.hasOwnProperty( key ) ) {
                         let quest: any = {
                             number: key,
-                            name: this.getQuestParamByNumber( key ).name,
+                            name: this.gameDataService.getQuestParamByNumber( questParams, key ).name,
                             metadata: questList[ key ]
                         };
 
@@ -111,10 +105,10 @@ export class RubricPageComponent implements OnInit, OnDestroy {
         this.loaderService.show( 'Идет загрузка данных...' );
 
         this.routeParams = this.route.params.subscribe( ( params ) => {
-            if( typeof params[ 'rubricaId' ] !== 'undefined' ) {
-                let rubricaId: string = params[ 'rubricaId' ];
+            if( typeof params[ 'rubricId' ] !== 'undefined' ) {
+                let rubricId: string = params[ 'rubricId' ];
 
-                this.getPageData( rubricaId );
+                this.getPageData( rubricId );
             }
         } );
     }

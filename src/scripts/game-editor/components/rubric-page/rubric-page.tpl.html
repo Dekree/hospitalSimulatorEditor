@@ -1,35 +1,35 @@
-<div class="rubrica-page">
+<div class="rubric-page">
 
-    <div class="rubrica__header">
+    <div class="rubric__header">
         <h1 class="h1">
-            {{ rubricaName }}
+            {{ rubricName }}
         </h1>
     </div>
 
-    <ul class="rubrica__actions">
-        <li class="rubrica__action">
-            <button class="rubrica__action_add-quest">
-                <a href="{{ '/game-editor/' + rubrica.id + '/quest-create' }}" title="Создать квест">
+    <ul class="rubric__actions">
+        <li class="rubric__action">
+            <button class="rubric__action_add-quest">
+                <a [routerLink]="[ '/game-editor/' + rubricId + '/quest-create' ]" title="Создать квест">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
         </li>
-        <li class="rubrica__action">
-            <button class="rubrica__action_change-order">
-                <a href="{{ '/game-editor/' + rubrica.id + '/quests-order' }}" title="Изменить порядок квестов">
+        <li class="rubric__action">
+            <button class="rubric__action_change-order">
+                <a [routerLink]="[ '/game-editor/' + rubricId + '/quests-order' ]" title="Изменить порядок квестов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
         </li>
     </ul>
 
-    <ul class="rubrica__quest-list">
+    <ul class="rubric__quest-list">
 
         <li *ngFor="let quest of quests"
             (click)="questClick( quest )"
-            class="rubrica__quest">
+            class="rubric__quest">
 
-            <a href="{{ '/game-editor/' + rubrica._id + '/' + quest.number }}" class="quest__link">
+            <a [routerLink]="[ '/game-editor/' + rubricId + '/' + quest.number ]" class="quest__link">
                 <div class="quest__title">
                     <h3 class="h3">
                         {{ quest.name }}
