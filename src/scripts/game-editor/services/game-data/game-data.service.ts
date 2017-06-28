@@ -9,6 +9,7 @@ export class GameDataService {
     private baseUrl: string = '../data/';
     private fileType: string = '.json';
 
+    private questParams: IQuestParam[] = [];
     private rubrics: IRubrica[] = null;
     private questList: IQuestList = {};
 
@@ -75,6 +76,45 @@ export class GameDataService {
         return null;
     }
 
+    private parseRubricatorForQuests( rubricator: IRubrica[] ): void {
+        for( let i: number = 0, ii: number = rubricator.length; i < ii; i += 1 ) {
+            let quests: IQuestParam[] = rubricator[ i ].quests;
+
+            quests.forEach( ( quest: IQuestParam ) => {
+                let isExist: boolean = false;
+                this.questParams.forEach( ( item: IQuestParam ) => {
+                    if( item.number === quest.number ) {
+                        isExist = true;
+                    }
+                } );
+
+                if( !isExist ) {
+                    this.questParams.push( quest );
+                }
+            } );
+        }
+
+        this.questParams.sort( ( a, b ) => {
+            let left: number = +a.number.slice( 1 );
+            let right: number = +b.number.slice( 1 );
+            return left - right;
+        } );
+    }
+
+    getQuestParam( questNumber: string ): Promise<IQuestParam> {
+        return new Promise( ( resolve, reject ) => {
+            if( this.questParams.length ) {
+                for( let i: number = 0, ii: number = this.questParams.length; i < ii; i += 1 ) {
+                    if( this.questParams[ i ].number === questNumber ) {
+                        resolve( this.questParams[ i ] );
+                    }
+                }
+            }
+
+            reject( 'Квеста с таким номером не существует' );
+        } );
+    }
+
     getRubrics(): Promise<IRubrica[]> {
         let rubricsFromcache: IRubrica[] = this.getRubricsFromCache();
 
@@ -91,6 +131,7 @@ export class GameDataService {
                 let rubrics: IRubrica[] = data.json();
 
                 this.addRubricsToCache( rubrics );
+                this.parseRubricatorForQuests( rubrics );
 
                 return rubrics;
             } )
