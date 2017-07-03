@@ -8,7 +8,6 @@ export interface IRubric {
     game: IGame;
 
     addQuest( quest: IQuest ): void;
-    createQuest( name: string ): void;
     updateQuest( questId: string, quest: IQuest ): boolean;
     deleteQuest( questId: string ): boolean;
 

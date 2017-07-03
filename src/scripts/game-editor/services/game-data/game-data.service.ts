@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
-import { IGameDataService, IQuestParam, IRubrica, IQuestMetadata, IQuestList, } from '../../interfaces';
+
+import {
+    IGameDataService,
+    IGame, IGameData,
+    IRubric, IRubricData,
+    IQuest, IQuestData,
+    IStep, IStepData
+} from '../../interfaces';
+
+import { Game, Rubric, Quest, Step } from '../../classes';
 
 @Injectable()
 export class GameDataService implements IGameDataService {
@@ -9,9 +18,7 @@ export class GameDataService implements IGameDataService {
     private baseUrl: string = '../data/';
     private fileType: string = '.json';
 
-    private questParams: IQuestParam[] = [];
-    private rubrics: IRubrica[] = null;
-    private questList: IQuestList = {};
+    private gameMetadata: IGame;
 
     constructor( private http: Http ) {
     }
@@ -22,14 +29,8 @@ export class GameDataService implements IGameDataService {
             .toPromise();
     }
 
-    private getQuest( index: number, fullQuestList: IQuestParam[], result: IQuestList ): Promise<IQuestList> {
+    private getQuest( index: number, fullQuestList: any[], result: IQuest[] ): Promise<IQuest[]> {
         let questNumber: string = fullQuestList[ index ].number;
-        let questFromCache: IQuestMetadata = this.getQuestMetadataFromCache( questNumber );
-
-        if( questFromCache !== null ) {
-            result[ questNumber ] = questFromCache;
-            return Promise.resolve( result );
-        }
 
         return this.get( this.baseUrl + questNumber + this.fileType )
             .then( ( data: any ) => {
@@ -52,134 +53,70 @@ export class GameDataService implements IGameDataService {
             } );
     }
 
-    private addRubricsToCache( rubrics: IRubrica[] ): void {
-        this.rubrics = rubrics;
-    }
+    private parseRubricatorForQuests( rubricator: IRubric[] ): any[] {
+        let questList: any[] = [];
 
-    private addQuestMetadataToCache( questList: IQuestList ): void {
-        for( let key in questList ) {
-            if( questList.hasOwnProperty( key ) ) {
-                this.questList[ key ] = questList[ key ];
-            }
-        }
-    }
-
-    private getRubricsFromCache(): IRubrica[] {
-        return this.rubrics;
-    }
-
-    private getQuestMetadataFromCache( questNumber: string ): IQuestMetadata {
-        if( typeof this.questList[ questNumber ] !== 'undefined' ) {
-            return this.questList[ questNumber ];
-        }
-
-        return null;
-    }
-
-    private parseRubricatorForQuests( rubricator: IRubrica[] ): void {
         for( let i: number = 0, ii: number = rubricator.length; i < ii; i += 1 ) {
-            let quests: IQuestParam[] = rubricator[ i ].quests;
+            let quests: any[] = rubricator[ i ].quests;
 
-            quests.forEach( ( quest: IQuestParam ) => {
+            quests.forEach( ( quest: any ) => {
                 let isExist: boolean = false;
-                this.questParams.forEach( ( item: IQuestParam ) => {
+                questList.forEach( ( item: any ) => {
                     if( item.number === quest.number ) {
                         isExist = true;
                     }
                 } );
 
                 if( !isExist ) {
-                    this.questParams.push( quest );
+                    questList.push( quest );
                 }
             } );
         }
 
-        this.questParams.sort( ( a, b ) => {
+        questList.sort( ( a, b ) => {
             let left: number = +a.number.slice( 1 );
             let right: number = +b.number.slice( 1 );
             return left - right;
         } );
     }
 
-    getQuestParamByNumber( quests: IQuestParam[], questNumber: string ): IQuestParam {
-        for( let i: number = 0, ii: number = quests.length; i < ii; i += 1 ) {
-            if( quests[ i ].number === questNumber ) {
-                return quests[ i ];
-            }
-        }
-    }
-
-    getQuestParam( questNumber: string ): Promise<IQuestParam> {
-        return new Promise( ( resolve, reject ) => {
-            if( this.questParams.length ) {
-                let questParam: IQuestParam = this.getQuestParamByNumber( this.questParams, questNumber );
-                resolve( questParam );
-            } else {
-                return this.getRubrics()
-                    .then( () => {
-                        if( this.questParams.length ) {
-                            let questParam: IQuestParam = this.getQuestParamByNumber( this.questParams, questNumber );
-                            resolve( questParam );
-                        } else {
-                            reject( 'Квеста с таким номером не существует' );
-                        }
-                    } );
-            }
-        } );
-    }
-
-    getRubrics(): Promise<IRubrica[]> {
-        let rubricsFromcache: IRubrica[] = this.getRubricsFromCache();
-
-        if( rubricsFromcache !== null ) {
-            return Promise.resolve( rubricsFromcache );
-        }
-
-        return this.get( this.baseUrl + 'rubricator' + this.fileType )
+    private getGameData(): Promise<IGameData> {
+        return this.get( this.baseUrl + 'game' + this.fileType )
             .then( ( data: any ) => {
-                if( !data ) {
-                    console.log( 'Error in download rubricator' );
-                }
-
-                let rubrics: IRubrica[] = data.json();
-
-                this.addRubricsToCache( rubrics );
-                this.parseRubricatorForQuests( rubrics );
-
-                return rubrics;
+                return data.json();
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
     }
 
-    getTutorialQuest( tutorialQuest: IQuestParam ): Promise<IQuestList> {
-        let result: IQuestList = {};
-
+    private getTutorialQuest(): Promise<IQuest> {
+        let result: IQuest[] = [];
         return Promise.resolve()
             .then( () => {
-                return this.getQuest( 0, [ tutorialQuest ], result );
+                return this.getQuest( 0, [ 'q0' ], result )[ 0 ];
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
     }
 
-    getQuests( fullQuestList: IQuestParam[] ): Promise<IQuestList> {
-        let result: IQuestList = {};
+    private getQuests( questList: string[] ): Promise<IQuest[]> {
+        let result: IQuest[] = [];
 
         return Promise.resolve()
             .then( () => {
-                return this.getQuest( 0, fullQuestList, result );
-            } )
-            .then( ( questList: IQuestList ) => {
-
-                this.addQuestMetadataToCache( questList );
-
-                return questList;
+                return this.getQuest( 0, questList, result );
             } )
             .catch( ( err ) => {
                 console.error( err );
+            } );
+    }
+
+    getData(): Promise<IGame> {
+        return this.getGameData()
+            .then( ( game: IGameData ) => {
+                this.game = new Game( '0', '', game, rubrics );
             } );
     }
 

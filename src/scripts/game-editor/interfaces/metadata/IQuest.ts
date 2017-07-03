@@ -8,7 +8,6 @@ export interface IQuest {
     rubric: IRubric;
 
     addStep( step: IStep ): void;
-    createStep( name: string ): void;
     updateStep( stepId: string, step: IStep ): boolean;
     deleteStep( stepId: string ): boolean;
 

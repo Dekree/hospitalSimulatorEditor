@@ -16,7 +16,6 @@ import { IQuest } from './IQuest';
 
 export interface IStep {
     _id: string;
-    metadata: IDialog|IDoc|IDocCalc|IDocMulti|IDocSingle|IExclamation|IFolder|IInfo|IMap|IMulti|ISingle|IYesno;
 
     quest: IQuest;
 

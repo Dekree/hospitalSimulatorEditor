@@ -6,7 +6,7 @@ import { IQuest } from '../metadata/IQuest';
 import { IStep } from '../metadata/IStep';
 
 export interface IGameDataService {
-    getDataByUrlParams( params: Params ): Promise<IGame>;
+    getData(): Promise<IGame>;
 
     getRubric( params: Params ): Promise<IRubric>;
     getQuest( params: Params ): Promise<IQuest>;
