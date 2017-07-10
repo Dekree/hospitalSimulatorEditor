@@ -67,7 +67,9 @@ export class Quest implements IQuest {
     }
 
     setSteps( steps: IStep[] ): void {
-        this.steps = steps;
+        if( typeof steps !== 'undefined' && steps.length > 0 ) {
+            this.steps = steps;
+        }
     }
 
 }

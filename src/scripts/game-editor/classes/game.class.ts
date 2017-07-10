@@ -65,7 +65,7 @@ export class Game implements IGame {
     }
 
     setRubrics( rubrics: IRubric[] ): void {
-        if( rubrics.length > 0 ) {
+        if( typeof rubrics !== 'undefined' && rubrics.length > 0 ) {
             this.rubrics = rubrics;
         }
     }
