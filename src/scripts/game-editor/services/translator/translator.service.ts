@@ -9,14 +9,13 @@ export class TranslatorService {
     }
 
     getTranslatedWord( collectionName: string, word: string ): string {
-        console.log( CONST );
         let collection: any = CONST[ collectionName ];
 
         if( typeof collection[ word ] !== 'undefined' ) {
             return collection[ word ];
         }
 
-        return '<% У слова нет перевода %>';
+        return word;
     }
 
 }

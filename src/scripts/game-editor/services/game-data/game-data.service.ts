@@ -7,7 +7,7 @@ import {
     IGame, IGameData,
     IRubric, IRubricData,
     IQuest, IQuestData,
-    IStep, IStepData
+    IStep
 } from '../../interfaces';
 
 import { Game, Rubric, Quest, Step } from '../../classes';
@@ -34,16 +34,15 @@ export class GameDataService implements IGameDataService {
 
     private getQuestData( rubric: IRubric, questId: string ): Promise<IQuest> {
         return this.get( this.baseUrl + 'q' + questId + this.fileType )
-            .then( ( data: any ) => {
+            .then( ( questData: IQuestData ) => {
 
-                if( data === null || typeof data === 'undefined' ) {
+                if( questData === null || typeof questData === 'undefined' ) {
                     console.log( 'Error in download quest ' + ( 'q' + questId ) );
                 }
 
-                let questData: IQuestData = data.json();
                 let quest: IQuest = new Quest( questId, questData.name, rubric );
-                let steps: IStep[] = questData.steps.map( ( stepData: IStepData ) => {
-                    return new Step( stepData._id, quest, stepData.metadata );
+                let steps: IStep[] = questData.steps.map( ( stepData: any ) => {
+                    return new Step( stepData._id, quest, stepData );
                 } );
 
                 quest.setSteps( steps );
@@ -62,7 +61,7 @@ export class GameDataService implements IGameDataService {
             }
         }
 
-        return [];
+        return null;
     }
 
     private getQuestsData( rubric: IRubric, questList: string[], i: number, result: IQuest[] ): Promise<IQuest[]> {
@@ -81,8 +80,8 @@ export class GameDataService implements IGameDataService {
             } );
     }
 
-    private getAllQuestsData( rubric: IRubric, rubricData: IRubricData): Promise<IQuest[]> {
-        let questList: string[] = rubricData.quests.slice();
+    private getAllQuestsData( rubric: IRubric, rubricData: IRubricData ): Promise<IQuest[]> {
+        let questList: string[] = rubricData.questsId.slice();
 
         return this.getQuestsData( rubric, questList, 0, [] )
             .catch( ( err ) => {
@@ -120,7 +119,11 @@ export class GameDataService implements IGameDataService {
             } );
     }
 
-    getData(): Promise<IGame> {
+    getGame(): Promise<IGame> {
+        if( typeof this.game !== 'undefined' ) {
+            return Promise.resolve( this.game );
+        }
+
         return this.get( this.baseUrl + 'game' + this.fileType )
             .then( ( gameData: IGameData ) => {
                 this.game = new Game( gameData._id, gameData.name );
