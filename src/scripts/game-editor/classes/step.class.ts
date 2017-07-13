@@ -26,6 +26,9 @@ export class Step implements IStep {
     constructor( _id: string, quest: IQuest, metadata: IDialog|IDoc|IDocCalc|IDocMulti|IDocSingle|IExclamation|IFolder|IInfo|IMap|IMulti|ISingle|IYesno ) {
         this._id = _id;
         this.quest = quest;
+
+        delete metadata._id;
+
         this.setMetadata( metadata );
     }
 
