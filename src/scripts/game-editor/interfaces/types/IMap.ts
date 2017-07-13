@@ -1,6 +1,8 @@
 import { ICombobox, INextItem } from './';
 
 export interface IMap {
+    _id: string;
+
     type: string;
     location: string;
     size: string;

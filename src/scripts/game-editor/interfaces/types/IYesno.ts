@@ -1,6 +1,8 @@
 import { IAnswerItem, INextItem } from './';
 
 export interface IYesno {
+    _id: string;
+
     type: string;
     location: string;
     size: string;

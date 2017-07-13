@@ -1,4 +1,6 @@
 export interface IInfo {
+    _id: string;
+
     type: string;
     location: string;
     size: string;
