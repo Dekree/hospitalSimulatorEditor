@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
@@ -7,7 +7,7 @@ import { NotificationsService } from 'angular2-notifications/dist';
 import { GameDataService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
-import { IRubrica, IQuestMetadata, IQuestList, IQuestParam } from '../../interfaces';
+import { IGame, IRubric, IQuest } from '../../interfaces';
 
 @Component( {
     selector: 'rubric-page',
@@ -18,13 +18,11 @@ import { IRubrica, IQuestMetadata, IQuestList, IQuestParam } from '../../interfa
 
 export class RubricPageComponent implements OnInit, OnDestroy {
 
-    private rubricName: string;
-    private rubricId: string;
-
-    private rubric: IRubrica;
-    private quests: IQuestMetadata[] = [];
-
     private routeParams: Subscription;
+
+    private rubric: IRubric;
+
+    private quests: IQuest[];
 
     constructor( private gameDataService: GameDataService,
                  private notificationsService: NotificationsService,
@@ -33,83 +31,34 @@ export class RubricPageComponent implements OnInit, OnDestroy {
                  private route: ActivatedRoute ) {
     }
 
-    private getPageData( rubricaId: string ): void {
-        this.getRubrica( rubricaId )
-            .then( () => {
-                return this.getQuests();
-            } )
-            .then( () => {
-                return this.drawQuests();
-            } )
-            .then( () => {
-                this.loaderService.hide();
+    private getData( rubricId: string ): Promise<any> {
+        return this.gameDataService.getGame()
+            .then( ( game: IGame ) => {
+                this.rubric = game.getRubric( rubricId );
+                this.quests = this.rubric.getAllQuests();
+
+                if( this.rubric === null ) {
+                    this.notificationsService.warn( 'Такой рубрики не существует' );
+                    this.router.navigateByUrl( '/game-editor' );
+
+                    return Promise.reject( 'Wrong rubrica number' );
+                }
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
     }
 
-    private getRubrica( rubricId: string ): Promise<any> {
-        return this.gameDataService.getRubrics()
-            .then( ( rubrics: IRubrica[] ) => {
-
-                rubrics.forEach( ( rubric: IRubrica ) => {
-                    if( rubric._id === rubricId ) {
-                        this.rubric = rubric;
-                        this.rubricName = rubric.rubricaName;
-                        this.rubricId = rubric._id;
-                    }
-                } );
-
-                if( typeof this.rubric === 'undefined' ) {
-                    this.notificationsService.warn( 'Такой рубрики не существует' );
-                    this.router.navigateByUrl( '/game-editor' );
-
-                    return Promise.reject( 'Wrong rubrica number' );
-                }
-            } );
-    }
-
-    private getQuests(): Promise<any> {
-        let questParams: IQuestParam[] = this.rubric.quests.slice();
-
-        return this.gameDataService.getQuests( questParams )
-            .then( ( questList: IQuestList ) => {
-                for( let key in questList ) {
-                    if( questList.hasOwnProperty( key ) ) {
-                        let quest: any = {
-                            number: key,
-                            name: this.gameDataService.getQuestParamByNumber( questParams, key ).name,
-                            metadata: questList[ key ]
-                        };
-
-                        this.quests.push( quest );
-                    }
-                }
-            } );
-    }
-
-    private drawQuests(): Promise<any> {
-        this.loaderService.show( 'Идет построение квестов...' );
-
-        return new Promise( ( resolve, reject ) => {
-
-        } );
-    }
-
-    questClick( quest: any ): void {
-
-    }
-
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
         this.routeParams = this.route.params.subscribe( ( params: Params ) => {
-            if( typeof params[ 'rubricId' ] !== 'undefined' ) {
-                let rubricId: string = params[ 'rubricId' ];
+            let rubricId: string = params[ 'rubricId' ];
 
-                this.getPageData( rubricId );
-            }
+            this.getData( rubricId )
+                .then( () => {
+                    this.loaderService.hide();
+                } );
         } );
     }
 

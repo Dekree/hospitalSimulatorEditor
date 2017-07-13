@@ -1,8 +1,9 @@
-<div class="game-editor-page">
+<div *ngIf="game"
+     class="game-editor-page">
 
     <div class="game__header">
         <h1 class="h1">
-            {{ header }}
+            {{ game.name }}
         </h1>
     </div>
 
@@ -26,13 +27,12 @@
     <ul class="game__rubrics-list">
 
         <li *ngFor="let rubric of rubrics"
-             (click)="rubricClick( rubric )"
              class="game__rubric">
 
             <a [routerLink]="[ '/game-editor/' + rubric._id ]" class="rubric__link">
                 <div class="rubric__title">
                     <h3 class="h3">
-                        {{ rubric.rubricaName }}
+                        {{ rubric.name }}
                     </h3>
                 </div>
             </a>

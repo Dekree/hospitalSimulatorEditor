@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
@@ -7,7 +7,7 @@ import { NotificationsService } from 'angular2-notifications/dist';
 import { GameDataService, TranslatorService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
-import { IStepMetadata, IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
+import { IGame, IRubric, IQuest, IStep } from '../../interfaces';
 
 @Component( {
     selector: 'step-page',
@@ -18,12 +18,14 @@ import { IStepMetadata, IQuestParam, IQuestMetadata, IQuestList } from '../../in
 
 export class StepPageComponent implements OnInit, OnDestroy {
 
-    private stepMetadata: IStepMetadata;
     private routeParams: Subscription;
 
-    private rubricId: string;
-    private questId: string;
-    private stepId: string;
+    private step: IStep;
+
+    private rubric: IRubric;
+    private quest: IQuest;
+
+    private stepMetadata: any;
 
     constructor( private gameDataService: GameDataService,
                  private notificationsService: NotificationsService,
@@ -33,37 +35,24 @@ export class StepPageComponent implements OnInit, OnDestroy {
                  private route: ActivatedRoute ) {
     }
 
-    private getStepMetadata( questNumber: string ): void {
-        let questParam: IQuestParam = {
-            number: questNumber,
-            name: ''
-        };
-        this.gameDataService.getQuests( [ questParam ] )
-            .then( ( questMetadata: IQuestList ) => {
-                this.stepMetadata = questMetadata[ questNumber ][ this.stepId ];
+    private getData( rubricId: string, questId: string, stepId: string ): Promise<any> {
+        return this.gameDataService.getGame()
+            .then( ( game: IGame ) => {
+                this.rubric = game.getRubric( rubricId );
+                this.quest = this.rubric.getQuest( questId );
+                this.step = this.quest.getStep( stepId );
+                this.stepMetadata = this.step.getMetadata();
 
-                if( typeof this.stepMetadata === 'undefined' ) {
+                if( this.rubric === null ) {
+                    this.notificationsService.warn( 'Такого шага не существует' );
+                    this.router.navigateByUrl( '/game-editor/' + this.rubric._id + '/' + this.quest._id );
+
                     return Promise.reject( 'Wrong step number' );
                 }
-                return this.drawStep();
-            } )
-            .then( () => {
-                this.loaderService.hide();
             } )
             .catch( ( err ) => {
-                this.notificationsService.warn( 'Такого шага не существует' );
-                this.router.navigateByUrl( '/game-editor/' + this.rubricId + '/' + this.questId );
-
                 console.error( err );
             } );
-    }
-
-    private drawStep(): Promise<any> {
-        this.loaderService.show( 'Идет построение шага...' );
-
-        return new Promise( ( resolve, reject ) => {
-
-        } );
     }
 
     getText( collectionName: string, word: string ): string {
@@ -73,12 +62,15 @@ export class StepPageComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
-        this.routeParams = this.route.params.subscribe( ( params ) => {
-            this.questId = params[ 'questId' ];
-            this.rubricId = params[ 'rubricId' ];
-            this.stepId = params[ 'stepId' ];
+        this.routeParams = this.route.params.subscribe( ( params: Params ) => {
+            let rubricId: string = params[ 'rubricId' ];
+            let questId: string = params[ 'questId' ];
+            let stepId: string = params[ 'stepId' ];
 
-            this.getStepMetadata( this.questId );
+            this.getData( rubricId, questId, stepId )
+                .then( () => {
+                    this.loaderService.hide();
+                } );
         } );
     }
 

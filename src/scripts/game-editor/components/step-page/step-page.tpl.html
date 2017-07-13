@@ -1,8 +1,9 @@
-<div *ngIf="stepMetadata" class="step-page">
+<div *ngIf="step"
+     class="step-page">
 
     <div class="step__header">
         <h1 class="h1">
-            {{ 'Шаг ' + stepId.slice( 5 ) }}
+            {{ 'Шаг ' + step._id }}
         </h1>
     </div>
 
@@ -10,7 +11,7 @@
 
         <li class="step__action">
             <button class="rubrica__action_add-quest">
-                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/' + stepId + '/step-live-view' }}" title="Предпросмотр шага">
+                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-live-view' ]" title="Предпросмотр шага">
                     <i class="fa fa-eye"></i>
                 </a>
             </button>
@@ -18,7 +19,7 @@
 
         <li class="quest__action">
             <button class="rubrica__action_change-order">
-                <a href="{{ '/game-editor/' + rubricaId + '/' + questNumber + '/' + stepId + '/step-edit' }}" title="Редактировать шаг">
+                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-edit' ]" title="Редактировать шаг">
                     <i class="fa fa-pencil"></i>
                 </a>
             </button>

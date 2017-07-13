@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
 import { NotificationsService } from 'angular2-notifications/dist';
@@ -7,7 +7,7 @@ import { NotificationsService } from 'angular2-notifications/dist';
 import { GameDataService } from '../../services';
 import { GameLoaderService } from 'game-loader/services';
 
-import { IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
+import { IGame, IRubric, IQuest, IStep } from '../../interfaces';
 
 @Component( {
     selector: 'quest-page',
@@ -18,15 +18,12 @@ import { IQuestParam, IQuestMetadata, IQuestList } from '../../interfaces';
 
 export class QuestPageComponent implements OnInit, OnDestroy {
 
-    private questMetadata: IQuestMetadata;
     private routeParams: Subscription;
 
-    private rubricId: string;
-    private questId: string;
-    private questNumber: string;
-    private questName: string;
+    private quest: IQuest;
 
-    private steps: any[] = [];
+    private rubric: IRubric;
+    private steps: IStep[];
 
     constructor( private gameDataService: GameDataService,
                  private notificationsService: NotificationsService,
@@ -35,71 +32,36 @@ export class QuestPageComponent implements OnInit, OnDestroy {
                  private route: ActivatedRoute ) {
     }
 
-    private getQuestMetadata( questNumber: string ): void {
-        this.gameDataService.getQuestParam( questNumber )
-            .then( ( questParam: IQuestParam ) => {
-                this.questNumber = questParam.number;
-                this.questName = questParam.name;
+    private getData( rubricId: string, questId: string ): Promise<any> {
+        return this.gameDataService.getGame()
+            .then( ( game: IGame ) => {
+                this.rubric = game.getRubric( rubricId );
+                this.quest = this.rubric.getQuest( questId );
+                this.steps = this.quest.getAllSteps();
 
-                return this.gameDataService.getQuests( [ questParam ] );
-            } )
-            .then( ( questMetadata: IQuestList ) => {
-                this.questMetadata = questMetadata[ questNumber ];
+                if( this.rubric === null ) {
+                    this.notificationsService.warn( 'Такого квеста не существует' );
+                    this.router.navigateByUrl( '/game-editor/' + this.rubric._id );
 
-                this.parseSteps( this.questMetadata );
-
-                return this.drawSteps();
-            } )
-            .then( () => {
-                this.loaderService.hide();
+                    return Promise.reject( 'Wrong quest number' );
+                }
             } )
             .catch( ( err ) => {
-                this.notificationsService.warn( err );
-                this.router.navigateByUrl( '/game-editor/' + this.rubricId );
-
-                console.error( 'Wrong quest number' );
+                console.error( err );
             } );
-    }
-
-    private drawSteps(): Promise<any> {
-        this.loaderService.show( 'Идет построение шагов...' );
-
-        return new Promise( ( resolve, reject ) => {
-
-        } );
-    }
-
-    private parseSteps( questMetadata: IQuestMetadata ): void {
-        for( let key in questMetadata ) {
-            if( questMetadata.hasOwnProperty( key ) ) {
-                let stepData: any = {
-                    name: key,
-                    metadata: questMetadata[ key ]
-                };
-
-                this.steps.push( stepData );
-            }
-        }
-
-        this.steps.sort( ( a, b ) => {
-            let aStep: number = +a.name.slice( 5 );
-            let bStep: number = +b.name.slice( 5 );
-            return aStep - bStep;
-        } );
-    }
-
-    stepClick( step: any ): void {
-
     }
 
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
 
-        this.routeParams = this.route.params.subscribe( ( params ) => {
-            this.questId = params[ 'questId' ];
-            this.rubricId = params[ 'rubricId' ];
+        this.routeParams = this.route.params.subscribe( ( params: Params ) => {
+            let rubricId: string = params[ 'rubricId' ];
+            let questId: string = params[ 'questId' ];
 
-            this.getQuestMetadata( this.questId );
+            this.getData( rubricId, questId )
+                .then( () => {
+                    this.loaderService.hide();
+                } );
         } );
     }
 

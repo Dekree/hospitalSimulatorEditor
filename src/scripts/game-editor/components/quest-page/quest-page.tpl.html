@@ -1,8 +1,9 @@
-<div class="quest-page">
+<div *ngIf="quest"
+     class="quest-page">
 
     <div class="quest__header">
         <h1 class="h1">
-            {{ questName }}
+            {{ quest.name }}
         </h1>
     </div>
 
@@ -10,7 +11,7 @@
 
         <li class="quest__action">
             <button class="quest__action_edit">
-                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/quest-edit' ]" title="Редактировать квест">
+                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/quest-edit' ]" title="Редактировать квест">
                     <i class="fa fa-pencil"></i>
                 </a>
             </button>
@@ -18,7 +19,7 @@
 
         <li class="quest__action">
             <button class="quest__action_add-step">
-                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/step-create' ]" title="Создать шаг">
+                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/step-create' ]" title="Создать шаг">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
@@ -26,7 +27,7 @@
 
         <li class="quest__action">
             <button class="quest__action_change-order">
-                <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questNumber + '/steps-order' ]" title="Изменить порядок шагов">
+                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/steps-order' ]" title="Изменить порядок шагов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
@@ -37,13 +38,12 @@
     <ul class="quest__step-list">
 
         <li *ngFor="let step of steps"
-            (click)="stepClick( step )"
             class="quest__step">
 
-            <a [routerLink]="[ '/game-editor/' + rubricId + '/' + questId + '/' + step.name ]" class="step__link">
+            <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/' + step._id ]" class="step__link">
                 <div class="step__title">
                     <h3 class="h3">
-                        {{ 'Шаг ' + step.name.slice( 5 ) }}
+                        {{ 'Шаг ' + step._id }}
                     </h3>
                 </div>
             </a>
