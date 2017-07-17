@@ -39,20 +39,42 @@ export class StepPageComponent implements OnInit, OnDestroy {
         return this.gameDataService.getGame()
             .then( ( game: IGame ) => {
                 this.rubric = game.getRubric( rubricId );
-                this.quest = this.rubric.getQuest( questId );
-                this.step = this.quest.getStep( stepId );
-                this.stepMetadata = this.step.getMetadata();
 
                 if( this.rubric === null ) {
-                    this.notificationsService.warn( 'Такого шага не существует' );
-                    this.router.navigateByUrl( '/game-editor/' + this.rubric._id + '/' + this.quest._id );
-
-                    return Promise.reject( 'Wrong step number' );
+                    this.goWrongUrl( rubricId, null, null );
+                    return Promise.reject( 'wrong address' );
                 }
+
+                this.quest = this.rubric.getQuest( questId );
+
+                if( this.quest === null ) {
+                    this.goWrongUrl( rubricId, questId, null );
+                    return Promise.reject( 'wrong address' );
+                }
+
+                this.step = this.quest.getStep( stepId );
+
+                if( this.step === null ) {
+                    this.goWrongUrl( rubricId, questId, stepId );
+                    return Promise.reject( 'wrong address' );
+                }
+
+                this.stepMetadata = this.step.getMetadata();
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
+    }
+
+    private goWrongUrl( rubricId: string, questId: string, stepId: string ): void {
+        let wrongUrl: string = this.gameDataService.buildWrongUrl( rubricId, questId, stepId );
+
+        this.notificationsService.warn( 'Такой страницы не существует' );
+        this.router.navigateByUrl( wrongUrl );
+    }
+
+    openStepModal(): void {
+        $( '.step_modal' ).fadeIn( 300 ).animate( { left: 0 }, 300 );
     }
 
     getText( collectionName: string, word: string ): string {

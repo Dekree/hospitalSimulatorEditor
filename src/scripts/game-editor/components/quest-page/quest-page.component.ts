@@ -36,19 +36,31 @@ export class QuestPageComponent implements OnInit, OnDestroy {
         return this.gameDataService.getGame()
             .then( ( game: IGame ) => {
                 this.rubric = game.getRubric( rubricId );
-                this.quest = this.rubric.getQuest( questId );
-                this.steps = this.quest.getAllSteps();
 
                 if( this.rubric === null ) {
-                    this.notificationsService.warn( 'Такого квеста не существует' );
-                    this.router.navigateByUrl( '/game-editor/' + this.rubric._id );
-
-                    return Promise.reject( 'Wrong quest number' );
+                    this.goWrongUrl( rubricId, null, null );
+                    return Promise.reject( 'wrong address' );
                 }
+
+                this.quest = this.rubric.getQuest( questId );
+
+                if( this.quest === null ) {
+                    this.goWrongUrl( rubricId, questId, null );
+                    return Promise.reject( 'wrong address' );
+                }
+
+                this.steps = this.quest.getAllSteps();
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
+    }
+
+    private goWrongUrl( rubricId: string, questId: string, stepId: string ): void {
+        let wrongUrl: string = this.gameDataService.buildWrongUrl( rubricId, questId, stepId );
+
+        this.notificationsService.warn( 'Такой страницы не существует' );
+        this.router.navigateByUrl( wrongUrl );
     }
 
     ngOnInit() {

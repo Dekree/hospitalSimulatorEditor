@@ -22,7 +22,7 @@ import { StepLiveViewPageComponent } from './components/step-live-view-page';
 
 const routes: Routes = [
     {
-        path: 'game-editor',
+        path: 'rubrics',
         component: GameEditorPageComponent,
         children: [
             { path: 'rubric-create', component: RubricCreatePageComponent },
@@ -30,7 +30,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricId',
+        path: 'rubrics/:rubricId',
         component: RubricPageComponent,
         children: [
             { path: 'edit', component: RubricEditPageComponent },
@@ -39,7 +39,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricId/:questId',
+        path: 'rubrics/:rubricId/:questId',
         component: QuestPageComponent,
         children: [
             { path: 'edit', component: QuestEditPageComponent },
@@ -48,7 +48,7 @@ const routes: Routes = [
         ]
     },
     {
-        path: 'game-editor/:rubricId/:questId/:stepId',
+        path: 'rubrics/:rubricId/:questId/:stepId',
         component: StepPageComponent,
         children: [
             { path: 'edit', component: StepEditPageComponent },

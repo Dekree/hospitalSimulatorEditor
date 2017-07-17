@@ -10,14 +10,14 @@
     <ul class="rubric__actions">
         <li class="rubric__action">
             <button class="rubric__action_add-quest">
-                <a [routerLink]="[ '/game-editor/' + rubric._id + '/quest-create' ]" title="Создать квест">
+                <a [routerLink]="[ '/rubrics/' + rubric._id + '/quest-create' ]" title="Создать квест">
                     <i class="fa fa-plus"></i>
                 </a>
             </button>
         </li>
         <li class="rubric__action">
             <button class="rubric__action_change-order">
-                <a [routerLink]="[ '/game-editor/' + rubric._id + '/quests-order' ]" title="Изменить порядок квестов">
+                <a [routerLink]="[ '/rubrics/' + rubric._id + '/quests-order' ]" title="Изменить порядок квестов">
                     <i class="fa fa-refresh"></i>
                 </a>
             </button>
@@ -29,7 +29,7 @@
         <li *ngFor="let quest of quests"
             class="rubric__quest">
 
-            <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id ]" class="quest__link">
+            <a [routerLink]="[ '/rubrics/' + rubric._id + '/' + quest._id ]" class="quest__link">
                 <div class="quest__title">
                     <h3 class="h3">
                         {{ quest.name }}

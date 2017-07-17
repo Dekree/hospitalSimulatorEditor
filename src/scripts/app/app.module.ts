@@ -17,6 +17,8 @@ import { GameEditorModule } from 'game-editor';
 import { AppComponent } from './component/app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
+
 @NgModule( {
     imports: [
         BrowserModule,
@@ -63,7 +65,8 @@ import { AppRoutingModule } from './app-routing.module';
         GameEditorModule
     ],
     declarations: [
-        AppComponent
+        AppComponent,
+        PageNotFoundComponent
     ],
     bootstrap: [ AppComponent ],
 

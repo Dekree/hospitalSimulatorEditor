@@ -3,9 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { GameEditorPageComponent } from '../game-editor/components/game-editor-page';
 
+import { PageNotFoundComponent } from '../components/page-not-found/page-not-found.component';
+
 const routes: Routes = [
-    { path: '', redirectTo: '/game-editor', pathMatch: 'full' },
-    { path: 'game-editor', component: GameEditorPageComponent }
+    { path: '', redirectTo: '/rubrics', pathMatch: 'full' },
+    { path: 'rubrics', component: GameEditorPageComponent },
+    { path: 'error/:message', component: PageNotFoundComponent }
 ];
 
 @NgModule( {

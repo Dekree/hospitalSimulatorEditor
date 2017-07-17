@@ -165,4 +165,24 @@ export class GameDataService implements IGameDataService {
         return this.getItemById( steps, stepId );
     }
 
+    buildWrongUrl( rubricId: string, questId: string, stepId: string ): string {
+        let initialUrl: string = '/error/';
+
+        if( rubricId !== null ) {
+            initialUrl += ( 'rubric-' + rubricId + '-' );
+        }
+
+        if( questId !== null ) {
+            initialUrl += ( 'quest-' + questId + '-' );
+        }
+
+        if( stepId !== null ) {
+            initialUrl += ( 'step-' + stepId + '-' );
+        }
+
+        initialUrl += 'not-found';
+
+        return initialUrl;
+    }
+
 }

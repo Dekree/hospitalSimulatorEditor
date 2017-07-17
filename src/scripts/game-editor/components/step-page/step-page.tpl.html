@@ -10,16 +10,18 @@
     <ul class="step__actions">
 
         <li class="step__action">
-            <button class="rubrica__action_add-quest">
-                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-live-view' ]" title="Предпросмотр шага">
+            <button class="step__action_live-view">
+                <a [routerLink]="[ '/rubrics/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-live-view' ]"
+                   title="Предпросмотр шага"
+                   (click)="openStepModal()">
                     <i class="fa fa-eye"></i>
                 </a>
             </button>
         </li>
 
-        <li class="quest__action">
-            <button class="rubrica__action_change-order">
-                <a [routerLink]="[ '/game-editor/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-edit' ]" title="Редактировать шаг">
+        <li class="step__action">
+            <button class="step__action_edit">
+                <a [routerLink]="[ '/rubrics/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-edit' ]" title="Редактировать шаг">
                     <i class="fa fa-pencil"></i>
                 </a>
             </button>
@@ -30,31 +32,28 @@
     <div class="step__metadata_view">
 
         <div class="metadata__location">
-            <h5 class="location__name">
+            <h5 class="metadata_field">
                 Локация:
             </h5>
-            <h5 class="location__value">
+            <h5 class="metadata_field metadata_value">
                 {{ getText( 'locations', stepMetadata.location ) }}
             </h5>
         </div>
 
         <div class="metadata__type">
-            <h5 class="type__name">
+            <h5 class="metadata_field">
                 Тип шага:
             </h5>
-            <h5 class="type__value">
+            <h5 class="metadata_field metadata_value">
                 {{ getText( 'types', stepMetadata.type ) }}
             </h5>
         </div>
 
-        <div class="metadata__size">
-            <h5 class="size__name">
-                Размер шага:
-            </h5>
-            <h5 class="size__value">
-                {{ getText( 'sizes', stepMetadata.size ) }}
-            </h5>
-        </div>
+    </div>
+
+    <div class="step_modal">
+
+        <router-outlet></router-outlet>
 
     </div>
 

@@ -35,18 +35,24 @@ export class RubricPageComponent implements OnInit, OnDestroy {
         return this.gameDataService.getGame()
             .then( ( game: IGame ) => {
                 this.rubric = game.getRubric( rubricId );
-                this.quests = this.rubric.getAllQuests();
 
                 if( this.rubric === null ) {
-                    this.notificationsService.warn( 'Такой рубрики не существует' );
-                    this.router.navigateByUrl( '/game-editor' );
-
-                    return Promise.reject( 'Wrong rubrica number' );
+                    this.goWrongUrl( rubricId, null, null );
+                    return Promise.reject( 'wrong address' );
                 }
+
+                this.quests = this.rubric.getAllQuests();
             } )
             .catch( ( err ) => {
                 console.error( err );
             } );
+    }
+
+    private goWrongUrl( rubricId: string, questId: string, stepId: string ): void {
+        let wrongUrl: string = this.gameDataService.buildWrongUrl( rubricId, questId, stepId );
+
+        this.notificationsService.warn( 'Такой страницы не существует' );
+        this.router.navigateByUrl( wrongUrl );
     }
 
     ngOnInit() {
