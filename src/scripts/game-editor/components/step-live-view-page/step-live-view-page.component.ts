@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -25,14 +26,17 @@ export class StepLiveViewPageComponent {
     private rubric: IRubric;
     private quest: IQuest;
 
-    private stepMetadata: any;
+    private iframe: JQuery;
+
+    private gameHost: string = 'http://192.168.2.164:8383/';
+    private stepMetadataJson: string;
 
     constructor( private gameDataService: GameDataService,
                  private notificationsService: NotificationsService,
                  private loaderService: GameLoaderService,
-                 private translatorService: TranslatorService,
                  private router: Router,
-                 private route: ActivatedRoute ) {
+                 private route: ActivatedRoute,
+                 private location: Location ) {
     }
 
     private getData( rubricId: string, questId: string, stepId: string ): Promise<any> {
@@ -59,7 +63,8 @@ export class StepLiveViewPageComponent {
                     return Promise.reject( 'wrong address' );
                 }
 
-                this.stepMetadata = this.step.getMetadata();
+                let stepMetadata: any = this.step.getMetadata();
+                this.stepMetadataJson = JSON.stringify( stepMetadata );
             } )
             .catch( ( err ) => {
                 console.error( err );
@@ -70,19 +75,23 @@ export class StepLiveViewPageComponent {
         let wrongUrl: string = this.gameDataService.buildWrongUrl( rubricId, questId, stepId );
 
         this.notificationsService.warn( 'Такой страницы не существует' );
-        // this.router.navigateByUrl( wrongUrl );
+        this.router.navigateByUrl( wrongUrl );
     }
 
-    private openPreview(): Promise<any> {
-        let iframe: any = window.frames[ 0 ];
+    private openPreview(): void {
+        let url: string = this.gameHost + '?step_metadata=' + this.stepMetadataJson;
 
-        return Promise.resolve();
+        this.iframe.attr( 'src', url );
+
+    }
+
+    private closePreview(): void {
+        this.iframe.attr( 'src', null );
+        this.location.back();
     }
 
     ngOnInit() {
         this.loaderService.show( 'Идет загрузка данных...' );
-
-        console.log( this.route );
 
         this.routeParams = this.route.params.subscribe( ( params: Params ) => {
             let rubricId: string = params[ 'rubricId' ];
@@ -94,6 +103,8 @@ export class StepLiveViewPageComponent {
                     return this.loaderService.hide();
                 } )
                 .then( () => {
+                    this.iframe = $( '#step_live_preview_iframe' );
+
                     return this.openPreview();
                 } );
         } );

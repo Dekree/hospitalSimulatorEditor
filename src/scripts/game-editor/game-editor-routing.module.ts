@@ -17,7 +17,6 @@ import { StepCreatePageComponent } from './components/step-create-page';
 import { StepsOrderPageComponent } from './components/steps-order-page';
 import { StepPageComponent } from './components/step-page';
 
-import { StepEditPageComponent } from './components/step-edit-page';
 import { StepLiveViewPageComponent } from './components/step-live-view-page';
 
 const routes: Routes = [
@@ -49,11 +48,11 @@ const routes: Routes = [
     },
     {
         path: 'rubrics/:rubricId/:questId/:stepId',
-        component: StepPageComponent,
-        children: [
-            { path: 'edit', component: StepEditPageComponent },
-            { path: 'step-live-view', component: StepLiveViewPageComponent }
-        ]
+        component: StepPageComponent
+    },
+    {
+        path: 'rubrics/:rubricId/:questId/:stepId/step-live-view',
+        component: StepLiveViewPageComponent
     }
 ];
 

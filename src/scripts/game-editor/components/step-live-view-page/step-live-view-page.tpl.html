@@ -1,5 +1,14 @@
 <div class="step-live-view-page">
 
-    <iframe src="http://192.168.2.164:8383/" frameborder="0"></iframe>
+    <div class="step-live-view_blocker">
+
+        <button class="step-live-view_back"
+                (click)="closePreview()">
+            Вернуться назад
+        </button>
+
+    </div>
+
+    <iframe id="step_live_preview_iframe" frameborder="0"></iframe>
 
 </div>

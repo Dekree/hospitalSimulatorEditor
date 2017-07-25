@@ -12,8 +12,7 @@
         <li class="step__action">
             <button class="step__action_live-view">
                 <a [routerLink]="[ '/rubrics/' + rubric._id + '/' + quest._id + '/' + step._id + '/step-live-view' ]"
-                   title="Предпросмотр шага"
-                   (click)="openStepModal()">
+                   title="Предпросмотр шага">
                     <i class="fa fa-eye"></i>
                 </a>
             </button>
@@ -48,12 +47,6 @@
                 {{ getText( 'types', stepMetadata.type ) }}
             </h5>
         </div>
-
-    </div>
-
-    <div class="step_modal">
-
-        <router-outlet></router-outlet>
 
     </div>
 
